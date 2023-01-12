@@ -20,5 +20,9 @@ public class ItemService
     {
         return _storage[item.Barcode] = item;
     }
-    
+
+    public void RemoveItem(string barcode)
+    {
+        _storage.Remove(barcode);
+    }
 }

@@ -37,4 +37,12 @@ public class ItemController : ControllerBase
         await Task.Delay(1);
         return Ok(item);
     }
+
+    [HttpDelete("by-barcode/{barcode}")]
+    public async Task<IActionResult> DeleteItem([FromRoute] string barcode)
+    {
+        await Task.Delay(1);
+        _service.RemoveItem(barcode);
+        return Ok();
+    }
 }
