@@ -14,6 +14,7 @@ public class ItemController : ControllerBase
     {
         _service = service;
     }
+
     [HttpPost]
     public async Task<IActionResult> CreateItem([FromBody] Item item)
     {
@@ -27,5 +28,13 @@ public class ItemController : ControllerBase
     {
         await Task.Delay(1);
         return Ok(_service.GetItem(barcode));
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateItem([FromBody] Item item)
+    {
+        _service.UpdateItem(item);
+        await Task.Delay(1);
+        return Ok(item);
     }
 }
