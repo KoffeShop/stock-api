@@ -15,4 +15,10 @@ public class ItemService
     {
         return _storage[barcode];
     }
+
+    public Item UpdateItem(Item item)
+    {
+        return _storage[item.Barcode] = item;
+    }
+    
 }
