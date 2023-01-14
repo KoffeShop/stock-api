@@ -33,6 +33,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "swagger",
+      "commandLineArgs": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

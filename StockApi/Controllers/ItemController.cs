@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using StockApi.Exceptions;
 using StockApi.Models;
 using StockApi.Services;
 
@@ -18,31 +19,40 @@ public class ItemController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateItem([FromBody] Item item)
     {
-        _service.CreateItem(item);
-        await Task.Delay(1);
-        return Ok(item);
+        try
+        {
+            await _service.CreateItem(item);
+            return Ok(item);
+        }
+        catch (AlreadyExistsException exception)
+        {
+            return BadRequest(exception.Message);
+        }
     }
 
     [HttpGet("by-barcode/{barcode}")]
     public async Task<IActionResult> GetItem([FromRoute] string barcode)
     {
-        await Task.Delay(1);
-        return Ok(_service.GetItem(barcode));
+        return Ok(await _service.GetItem(barcode));
+    }
+
+    [HttpGet("by-categoryId/{categoryId}")]
+    public async Task<IActionResult> GetItemsById(int categoryId)
+    {
+        return Ok(await _service.GetItemsById(categoryId));
     }
 
     [HttpPut]
     public async Task<IActionResult> UpdateItem([FromBody] Item item)
     {
-        _service.UpdateItem(item);
-        await Task.Delay(1);
+        await _service.UpdateItem(item);
         return Ok(item);
     }
 
     [HttpDelete("by-barcode/{barcode}")]
     public async Task<IActionResult> DeleteItem([FromRoute] string barcode)
     {
-        await Task.Delay(1);
-        _service.RemoveItem(barcode);
+        await _service.RemoveItem(barcode);
         return Ok();
     }
 }
