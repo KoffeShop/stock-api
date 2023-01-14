@@ -1,28 +1,42 @@
+using Dapper;
+using Npgsql;
 using StockApi.Models;
+using StockApi.Repository;
 
 namespace StockApi.Services;
 
 public class ItemService
 {
-    private readonly Dictionary<string, Item> _storage = new();
+    private readonly IItemsRepository _repository;
 
-    public void CreateItem(Item item)
+    public ItemService(IItemsRepository repository)
     {
-        _storage.TryAdd(item.Barcode, item);
+        _repository = repository;
     }
 
-    public Item GetItem(string barcode)
+    public Task CreateItem(Item item)
     {
-        return _storage[barcode];
+        return _repository.CreateItem(item);
     }
 
-    public Item UpdateItem(Item item)
+    public Task<Item?> GetItem(string barcode)
     {
-        return _storage[item.Barcode] = item;
+        return _repository.GetItem(barcode);
     }
 
-    public void RemoveItem(string barcode)
+    public Task<IEnumerable<Item>> GetItemsById(int categoryId)
     {
-        _storage.Remove(barcode);
+        return _repository.GetItemsById(categoryId);
     }
+
+    public Task UpdateItem(Item item)
+    {
+        return _repository.UpdateItem(item);
+    }
+
+    public Task RemoveItem(string barcode)
+    {
+        return _repository.RemoveItem(barcode);
+    }
+
 }
